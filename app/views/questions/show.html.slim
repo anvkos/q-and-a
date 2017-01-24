@@ -1,6 +1,7 @@
 h2 = @question.title
 div = @question.body
 
-div class="answers"
-  - @question.answers.each do |answer|
-    div class="answer" = answer.body
+- if @question.answers.any?
+    div class="answers"
+      - @question.answers.each do |answer|
+        div class="answer" = answer.body
