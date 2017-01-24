@@ -5,3 +5,6 @@ div = @question.body
     div class="answers"
       - @question.answers.each do |answer|
         div class="answer" = answer.body
+
+div class="form_add_answer"
+  = render 'answers/form', question: @question
