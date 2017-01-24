@@ -18,6 +18,7 @@
 
 config/database.yml
 
+coverage
 .ruby-gemset
 .ruby-version
 *.sublime-project
