@@ -6,9 +6,11 @@ feature 'Create answer', %q{
   I want to be able to write the answer
 } do
 
+  given(:user) { create(:user) }
   given (:question) { create(:question) }
 
-  scenario 'User create answer' do
+  scenario 'Authenticated user create answer' do
+    sign_in(user)
     visit question_path(question)
     fill_in 'Body', with: 'My answer text'
     click_on 'Add new answer'
@@ -17,11 +19,18 @@ feature 'Create answer', %q{
     expect(current_path).to eq question_path(question)
   end
 
-  scenario 'User create answer with invalid attributes' do
+  scenario 'Authenticated user create answer with invalid attributes' do
+    sign_in(user)
     visit question_path(question)
     fill_in 'Body', with: ''
     click_on 'Add new answer'
     expect(page).to have_content "Not the correct answer data"
   end
 
+  scenario 'Non-authenticated user try to creates qiestion' do
+    visit question_path(question)
+    fill_in 'Body', with: 'My answer text'
+    click_on 'Add new answer'
+    expect(page).to have_content 'You need to sign in or sign up before continuing.'
+  end
 end
