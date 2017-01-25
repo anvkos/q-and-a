@@ -7,7 +7,11 @@ div = @question.body
 - if @question.answers.any?
     div class="answers"
       - @question.answers.each do |answer|
-        div class="answer" = answer.body
+          div class="answer"
+            = answer.body
+            - if user_signed_in? && current_user.author?(answer) && answer.valid?
+                div class="delete"
+                  = link_to 'Delete answer', answer, method: :delete
 
 div class="form_add_answer"
   = render 'answers/form', question: @question

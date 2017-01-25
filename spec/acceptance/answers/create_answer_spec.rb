@@ -5,9 +5,8 @@ feature 'Create answer', %q{
   As a user
   I want to be able to write the answer
 } do
-
   given(:user) { create(:user) }
-  given (:question) { create(:question) }
+  given(:question) { create(:question) }
 
   scenario 'Authenticated user create answer' do
     sign_in(user)

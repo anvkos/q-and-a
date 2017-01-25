@@ -5,6 +5,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable
 
   has_many :questions, dependent: :destroy
+  has_many :answers, dependent: :destroy
 
   def author?(entity)
     id == entity.user_id
