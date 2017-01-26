@@ -8,7 +8,6 @@ class AnswersController < ApplicationController
 
   def create
     @answer = @question.answers.new(answer_params)
-    # TODO: move to model
     @answer.user = current_user
     if @answer.save
       redirect_to @question, notice: 'Your answer successfully created.'
@@ -23,10 +22,12 @@ class AnswersController < ApplicationController
     if current_user.author?(@answer)
       @answer.destroy
       flash[:notice] = 'Answer was successfully destroyed.'
+      redirect_to @answer.question
     else
       flash[:alert] = 'You can not remove an answer!'
+      @question = @answer.question
+      render 'questions/show'
     end
-    redirect_to @answer.question
   end
 
   private

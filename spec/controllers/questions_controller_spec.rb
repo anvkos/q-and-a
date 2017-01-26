@@ -69,6 +69,11 @@ RSpec.describe QuestionsController, type: :controller do
         end.to change(Question, :count).by(1)
       end
 
+      it 'question belongs to the user' do
+        post :create, params: { question: attributes_for(:question) }
+        expect(Question.last.user).to eq @user
+      end
+
       it 'redirects to show view' do
         post :create, params: { question: attributes_for(:question) }
         expect(response).to redirect_to question_path(assigns(:question))
@@ -112,14 +117,17 @@ RSpec.describe QuestionsController, type: :controller do
     end
 
     context 'invalid attributes' do
+      let(:expetced_data) { { title: "premier Title", body: 'premier Body' } }
+      let(:question) { create(:question, title: expetced_data[:title], body: expetced_data[:body]) }
+
       before do
         patch :update, params: { id: question, question: { title: 'updated title', body: nil } }
       end
 
       it 'does not change question attributes' do
         question.reload
-        expect(question.title).to eq 'MyString'
-        expect(question.body).to eq 'MyText'
+        expect(question.title).to eq expetced_data[:title]
+        expect(question.body).to eq expetced_data[:body]
       end
 
       it 're-renders edit view' do
@@ -144,10 +152,20 @@ RSpec.describe QuestionsController, type: :controller do
       end
 
       context 'User is not the author' do
+        let(:another_user) { create(:user) }
+        let(:another_question) { create(:question, user: another_user) }
+        render_views
+
         it 'delete try question' do
-          another_user = create(:user)
-          another_question = create(:question, user: another_user)
+          another_question
           expect { delete :destroy, params: { id: another_question } }.to_not change(Question, :count)
+        end
+
+        it 're-renders question view' do
+          delete :destroy, params: { id: another_question }
+          expect(response).to render_template :show
+          expect(response.body).to match another_question.body
+          expect(response.body).to match another_question.title
         end
       end
     end

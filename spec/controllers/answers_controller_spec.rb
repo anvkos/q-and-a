@@ -26,6 +26,11 @@ RSpec.describe AnswersController, type: :controller do
         end.to change(question.answers, :count).by(1)
       end
 
+      it 'answer belongs to the user' do
+        post :create, params: { question_id: question, answer: attributes_for(:answer) }
+        expect(Answer.last.user).to eq @user
+      end
+
       it 'redirects to show question view' do
         post :create, params: { question_id: question, answer: attributes_for(:answer) }
         expect(response).to redirect_to question
@@ -52,28 +57,37 @@ RSpec.describe AnswersController, type: :controller do
 
       context 'User is author' do
         it 'delete answer' do
-          expect { delete :destroy, params: { id: answer, question_id: answer.question_id } }.to change(Answer, :count).by(-1)
+          expect { delete :destroy, params: { id: answer } }.to change(Answer, :count).by(-1)
         end
 
         it 'redirect to question view' do
-          delete :destroy, params: { id: answer, question_id: question }
+          delete :destroy, params: { id: answer }
           expect(response).to redirect_to question
         end
       end
 
       context 'User is not the author' do
+        let(:another_user) { create(:user) }
+        let(:another_answer) { create(:answer, user: another_user, question: question) }
+        render_views
+
         it 'try delete answer' do
-          another_user = create(:user)
-          another_answer = create(:answer, user: another_user, question: question)
-          expect { delete :destroy, params: { id: another_answer, question_id: another_answer.question_id } }.to_not change(Answer, :count)
+          another_answer
+          expect { delete :destroy, params: { id: another_answer } }.to_not change(Answer, :count)
+        end
+
+        it 're-renders question view' do
+          delete :destroy, params: { id: another_answer }
+          expect(response).to render_template 'questions/show'
+          expect(response.body).to match another_answer.body
         end
       end
     end
 
     context 'Non-authenticated user' do
       it 'delete answer' do
-         answer
-         expect { delete :destroy, params: { id: answer } }.to_not change(Answer, :count)
+        answer
+        expect { delete :destroy, params: { id: answer } }.to_not change(Answer, :count)
       end
     end
   end
