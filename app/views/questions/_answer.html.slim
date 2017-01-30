@@ -1,5 +1,0 @@
-div class="answer"
-  = answer.body
-  - if user_signed_in? && current_user.author?(answer)
-    div class="delete"
-      = link_to 'Delete answer', answer, method: :delete

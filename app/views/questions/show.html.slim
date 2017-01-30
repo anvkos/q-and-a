@@ -4,10 +4,9 @@ div = @question.body
     div
       = link_to 'Delete question', @question, method: :delete
 
-div class="answers"
-  - if @question.answers.any?
-      = render 'questions/answers'
+.answers
+   = render @question.answers
 
 - if user_signed_in?
-  div class="form_add_answer"
-    = render 'answers/form', question: @question
+    .form_add_answer
+       = render 'answers/form', question: @question
