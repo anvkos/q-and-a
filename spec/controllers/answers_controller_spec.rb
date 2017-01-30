@@ -22,31 +22,31 @@ RSpec.describe AnswersController, type: :controller do
     context 'with valid attributes' do
       it 'saves the new answer in the database' do
         expect do
-          post :create, params: { question_id: question, answer: attributes_for(:answer) }
+          post :create, params: { question_id: question, answer: attributes_for(:answer), format: :js }
         end.to change(question.answers, :count).by(1)
       end
 
       it 'answer belongs to the user' do
-        post :create, params: { question_id: question, answer: attributes_for(:answer) }
+        post :create, params: { question_id: question, answer: attributes_for(:answer), format: :js }
         expect(Answer.last.user).to eq @user
       end
 
-      it 'redirects to show question view' do
-        post :create, params: { question_id: question, answer: attributes_for(:answer) }
-        expect(response).to redirect_to question
+      it 'render create template' do
+        post :create, params: { question_id: question, answer: attributes_for(:answer), format: :js }
+        expect(response).to render_template :create
       end
     end
 
     context 'with invalid attributes' do
       it 'does not save the answer' do
         expect do
-          post :create, params: { question_id: question, answer: attributes_for(:invalid_answer) }
+          post :create, params: { question_id: question, answer: attributes_for(:invalid_answer), format: :js }
         end.to_not change(Answer, :count)
       end
 
-      it 're-renders new view' do
-        post :create, params: { question_id: question, answer: attributes_for(:invalid_answer) }
-        expect(response).to render_template 'questions/show'
+      it 'render create template' do
+        post :create, params: { question_id: question, answer: attributes_for(:invalid_answer), format: :js }
+        expect(response).to render_template :create
       end
     end
   end
@@ -67,8 +67,8 @@ RSpec.describe AnswersController, type: :controller do
       end
 
       context 'User is not the author' do
-        let(:another_user) { create(:user) }
-        let(:another_answer) { create(:answer, user: another_user, question: question) }
+        let!(:another_user) { create(:user) }
+        let!(:another_answer) { create(:answer, user: another_user, question: question) }
         render_views
 
         it 'try delete answer' do

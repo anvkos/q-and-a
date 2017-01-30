@@ -63,5 +63,7 @@ group :test do
   gem 'rails-controller-testing'
   gem 'capybara'
   gem 'launchy'
+  gem 'capybara-webkit'
+  gem 'database_cleaner'
   gem 'simplecov', :require => false
 end

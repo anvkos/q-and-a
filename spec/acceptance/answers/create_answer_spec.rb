@@ -8,28 +8,30 @@ feature 'Create answer', %q{
   given(:user) { create(:user) }
   given(:question) { create(:question) }
 
-  scenario 'Authenticated user create answer' do
+  scenario 'Authenticated user create answer', js: true do
     sign_in(user)
     visit question_path(question)
-    fill_in 'Body', with: 'My answer text'
+    answer_text = 'My answer text'
+    fill_in 'Body', with: answer_text
     click_on 'Add new answer'
-    expect(page).to have_content 'Your answer successfully created.'
-    expect(page).to have_content 'My answer text'
+    within '.answers' do
+      expect(page).to have_content answer_text
+    end
     expect(current_path).to eq question_path(question)
   end
 
-  scenario 'Authenticated user create answer with invalid attributes' do
+  scenario 'Authenticated user create answer with invalid attributes', js: true  do
     sign_in(user)
     visit question_path(question)
-    fill_in 'Body', with: ''
+    answer_text = 'text567'
+    fill_in 'Body', with: answer_text
     click_on 'Add new answer'
-    expect(page).to have_content "Not the correct answer data"
+    expect(page).not_to have_content answer_text
   end
 
-  scenario 'Non-authenticated user try to creates qiestion' do
+  scenario 'Non-authenticated user try to creates qiestion', js: true  do
     visit question_path(question)
-    fill_in 'Body', with: 'My answer text'
-    click_on 'Add new answer'
-    expect(page).to have_content 'You need to sign in or sign up before continuing.'
+
+    expect(page).not_to have_selector('#answer_body')
   end
 end
