@@ -4,4 +4,4 @@
       - if user_signed_in? && current_user.author?(answer)
           = render 'answers/form_edit', answer: answer
           .delete
-            = link_to 'Delete answer', answer, method: :delete
+            = link_to 'Delete answer', answer, method: :delete, data: { confirm: 'The answer will be deleted. You are sure?' }, remote: true

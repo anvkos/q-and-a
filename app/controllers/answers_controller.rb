@@ -18,15 +18,7 @@ class AnswersController < ApplicationController
   end
 
   def destroy
-    if current_user.author?(@answer)
-      @answer.destroy
-      flash[:notice] = 'Answer was successfully destroyed.'
-      redirect_to @answer.question
-    else
-      flash[:alert] = 'You can not remove an answer!'
-      @question = @answer.question
-      render 'questions/show'
-    end
+    @answer.destroy if current_user.author?(@answer)
   end
 
   private
