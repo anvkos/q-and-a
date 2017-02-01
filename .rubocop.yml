@@ -19,7 +19,7 @@ Style/Documentation:
     - 'lib/**/version.rb'
 
 Metrics/LineLength:
-  Max: 100
+  Max: 120
 
 Metrics/MethodLength:
   Max: 15
