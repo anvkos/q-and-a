@@ -4,6 +4,8 @@ class Answer < ApplicationRecord
 
   validates :body, presence: true, length: { minimum: 10 }
 
+  scope :first_best, -> { order('best DESC') }
+
   def mark_best
     reset_best
     self.update(best: true)

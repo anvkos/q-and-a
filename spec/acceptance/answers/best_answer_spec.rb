@@ -45,12 +45,26 @@ feature 'Best answer', %q{
         within ".answer-#{another_answer.id}" do
           click_on 'Mark best'
         end
+        wait_for_ajax
         answers.each do |answer|
           within ".answer-#{answer.id}" do
             expect(page).to_not have_content 'Answer best'
           end
         end
         within ".answer-#{another_answer.id}" do
+          expect(page).to have_content 'Answer best'
+        end
+      end
+
+      scenario 'best answer first', js: true do
+        answers = create_list(:answer, 5, question: question)
+        visit question_path(question)
+        best_answer = answers[2]
+        within ".answer-#{best_answer.id}" do
+          click_on 'Mark best'
+        end
+        wait_for_ajax
+        within all('.answer').first do
           expect(page).to have_content 'Answer best'
         end
       end

@@ -2,7 +2,7 @@
   = render @question
 
 .answers
-   = render @question.answers
+   = render @question.answers.first_best
 
 - if user_signed_in?
     .form_add_answer

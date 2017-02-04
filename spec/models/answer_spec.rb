@@ -36,4 +36,15 @@ RSpec.describe Answer, type: :model do
       end
     end
   end
+
+  describe '#first_best' do
+    let(:question) { create(:question) }
+
+    it 'first in the list' do
+      answers = create_list(:answer, 5, question: question)
+      third_answer = answers.third
+      third_answer.update(best: true)
+      expect(Answer.first_best.first).to eq third_answer
+    end
+  end
 end
