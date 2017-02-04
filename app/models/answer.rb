@@ -7,13 +7,9 @@ class Answer < ApplicationRecord
   scope :first_best, -> { order('best DESC') }
 
   def mark_best
-    reset_best
-    self.update(best: true)
-  end
-
-  private
-
-  def reset_best
-    self.question.answers.update_all(best: false)
+    ActiveRecord::Base.transaction do
+      self.question.answers.update_all(best: false)
+      self.update(best: true)
+    end
   end
 end

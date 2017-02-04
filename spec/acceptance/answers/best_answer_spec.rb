@@ -25,23 +25,30 @@ feature 'Best answer', %q{
         expect(page).to have_content 'Answer best'
       end
 
+      scenario 'does not see the link in a best', js: true do
+        click_on 'Mark best'
+        expect(page).to_not have_link 'Mark best'
+        expect(page).to have_content 'Answer best'
+      end
+
       scenario 'choose another best', js: true do
         create(:answer, best: true, question: question)
-        click_on 'Mark best'
+        visit question_path(question)
+        within ".answer-#{answer.id}" do
+          click_on 'Mark best'
+        end
+        wait_for_ajax
         within ".answer-#{answer.id}" do
           expect(page).to have_content 'Answer best'
         end
       end
 
-      scenario 'best answer onle one for question', js: true do
+      scenario 'best answer only one for question', js: true do
         answers = create_list(:answer, 5, question: question)
         another_answer = create(:answer, question: question)
+        answers.first.mark_best
+        answers.third.mark_best
         visit question_path(question)
-        answers.each do |answer|
-          within ".answer-#{answer.id}" do
-            click_on 'Mark best'
-          end
-        end
         within ".answer-#{another_answer.id}" do
           click_on 'Mark best'
         end
@@ -72,7 +79,7 @@ feature 'Best answer', %q{
 
     scenario 'not author question does not see link mark best' do
       another_question = create(:question)
-      create_list(:answer, 5, question: another_question)
+      create(:answer, question: another_question)
       visit question_path(another_question)
       expect(page).to_not have_link 'Mark best'
     end
