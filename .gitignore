@@ -18,6 +18,8 @@
 
 config/database.yml
 
+/public/uploads
+
 coverage
 .ruby-gemset
 .ruby-version
