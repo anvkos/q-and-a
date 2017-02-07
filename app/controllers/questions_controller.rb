@@ -8,6 +8,7 @@ class QuestionsController < ApplicationController
 
   def show
     @answer = @question.answers.build
+    @answer.attachments.build
   end
 
   def new
@@ -37,6 +38,8 @@ class QuestionsController < ApplicationController
       redirect_to questions_path, notice: 'Question was successfully deleted.'
     else
       flash[:alert] = 'You can not remove an question!'
+      @answer = @question.answers.build
+      @answer.attachments.build
       render :show
     end
   end
