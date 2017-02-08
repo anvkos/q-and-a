@@ -1,0 +1,9 @@
+- if entity.attachments.any?
+    div
+      | Attachments:
+      ul
+        - entity.attachments.each do |a|
+          li
+            = link_to a.file.identifier, a.file.url
+            | &nbsp
+            = link_to 'Delete file'

@@ -1,11 +1,6 @@
 h2 = @question.title
 div = @question.body
-- if @question.attachments.any?
-    div
-      | Attachments:
-      ul
-        - @question.attachments.each do |a|
-          li = link_to a.file.identifier, a.file.url
+= render 'attachments/attachments', entity: @question
 - if user_signed_in? && current_user.author?(@question)
     div
       = link_to 'Edit', '', class: 'edit-question-link'
