@@ -3,7 +3,6 @@ require 'rails_helper'
 RSpec.describe Question, type: :model do
   describe 'association' do
     it { should have_many(:answers).dependent(:destroy) }
-    it { should belong_to(:user) }
     it { should have_many(:attachments).dependent(:destroy) }
   end
 
@@ -17,4 +16,6 @@ RSpec.describe Question, type: :model do
   describe 'attributes' do
     it { should accept_nested_attributes_for :attachments }
   end
+
+  it_behaves_like 'has_user'
 end
