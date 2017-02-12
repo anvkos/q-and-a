@@ -1,7 +1,9 @@
 = form_for question, remote: true, html: { id: 'edit-question' } do |f|
   .question-errors
-  = f.label :title
-  = f.text_field :title
-  = f.label :body
-  = f.text_area :body
-  = f.submit 'Save'
+  = f.label :title, class: 'label'
+  p.control
+    = f.text_field :title, class: 'input'
+  = f.label :body, class: 'label'
+  p.control
+  = f.text_area :body, class: 'textarea'
+  = f.submit 'Save', class: 'button is-success'

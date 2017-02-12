@@ -1,7 +1,16 @@
-= form_for @question do |f|
-  = f.label :title
-  = f.text_field :title
-  = f.label :body
-  = f.text_area :body
-  = render 'attachments/form', f: f
-  = f.submit 'Create'
+section.hero
+  .hero-body
+    .container
+      h2.title
+        | Add new question
+      .columns
+        .column.is-two-thirds
+          = form_for @question do |f|
+            = f.label :title, class: 'label'
+            p.control
+              = f.text_field :title, class: 'input'
+            = f.label :body, class: 'label'
+            p.control
+              = f.text_area :body, class: 'textarea'
+            = render 'attachments/form', f: f
+            = f.submit 'Create', class: 'button is-primary'

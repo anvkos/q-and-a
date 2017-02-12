@@ -1,8 +1,7 @@
 = form_for [question, @answer], remote: true do |f|
-  = f.label :body
-  br
+  = f.label :body, class: 'label'
   .answer-errors
-  = f.text_area :body
-  br
+  p.control
+    = f.text_area :body, class: 'textarea'
   = render 'attachments/form', f: f
-  = f.submit 'Add new answer'
+  = f.submit 'Add new answer', class: 'button is-info'

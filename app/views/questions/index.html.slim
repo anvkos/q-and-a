@@ -1,8 +1,10 @@
-p= link_to 'Ask question', new_question_path
-
-h2
-  | List questions
-- @questions.each do |question|
-  h3
-    = link_to question.title, question
-
+section.hero
+  .hero-body
+    .container
+      h2.title
+        | List questions
+      h3.subtitle = link_to 'Ask question', new_question_path
+section
+  - @questions.each do |question|
+    h4.title.is-4
+      = link_to question.title, question

@@ -36,7 +36,7 @@ gem 'jbuilder', '~> 2.5'
 # gem 'capistrano-rails', group: :development
 
 gem 'slim-rails'
-
+gem 'bulma-rails', '~> 0.3.1'
 gem 'devise'
 
 gem 'carrierwave', '~> 1.0'

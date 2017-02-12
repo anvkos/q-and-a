@@ -1,7 +1,8 @@
 div
-  = link_to 'Edit', '', class: 'edit-answer-link', data: { answer_id: answer.id }
+  = link_to 'Edit', '', class: 'edit-answer-link button is-success is-outlined is-small', data: { answer_id: answer.id }
 div
   = form_for answer, remote: true, html: { id: "edit-answer-#{answer.id}" } do |f|
-    = f.label :body, 'Answer'
-    = f.text_area :body, id: "body-answer-#{answer.id}"
-    = f.submit 'Save'
+    = f.label :body, 'Answer', class: 'label'
+    p.control
+      = f.text_area :body, id: "body-answer-#{answer.id}", class: 'textarea'
+    = f.submit 'Save', class: 'button is-success is-outlined'

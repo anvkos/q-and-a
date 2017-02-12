@@ -1,9 +1,14 @@
-h2 = @question.title
-div = @question.body
-= render 'attachments/attachments', entity: @question
-- if user_signed_in? && current_user.author?(@question)
-    div
-      = link_to 'Edit', '', class: 'edit-question-link'
-      = render 'form_edit', question: @question
-    div
-      = link_to 'Delete question', @question, method: :delete
+section.hero
+  .hero-body
+    .container.question
+      h2.title
+        = @question.title
+      = @question.body
+      = render 'attachments/attachments', entity: @question
+      - if user_signed_in? && current_user.author?(@question)
+          div
+            = link_to 'Edit', '', class: 'edit-question-link button is-success is-outlined is-small'
+            = render 'form_edit', question: @question
+          div
+            = link_to 'Delete question', @question, method: :delete, class: 'button is-danger is-outlined is-small'
+

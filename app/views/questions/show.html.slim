@@ -1,9 +1,8 @@
-.question
-  = render @question
+= render @question
 
-.answers
+section.answers
    = render @question.answers.first_best
 
 - if user_signed_in?
-    .form_add_answer
+    section.form_add_answer
        = render 'answers/form', question: @question, answer: @answer
