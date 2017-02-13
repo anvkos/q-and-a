@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe Answer, type: :model do
   it_behaves_like 'has_user'
   it_behaves_like 'attachable'
+  it_behaves_like 'votable'
 
   describe 'association' do
     it { should belong_to(:question) }
