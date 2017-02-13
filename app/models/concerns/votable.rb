@@ -5,4 +5,8 @@ module Votable
 
     accepts_nested_attributes_for :votes
   end
+
+  def rating
+    self.votes.sum(:rating)
+  end
 end
