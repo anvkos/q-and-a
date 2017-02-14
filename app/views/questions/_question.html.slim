@@ -3,6 +3,7 @@ section.hero
     .container.question
       h2.title
         = @question.title
+      = render 'votes/vote', entity: @question
       = @question.body
       = render 'attachments/attachments', entity: @question
       - if user_signed_in? && current_user.author?(@question)

@@ -6,7 +6,7 @@
               b Answer best
         - elsif user_signed_in? && current_user.author?(answer.question)
           = link_to 'Mark best', mark_best_answer_path(answer), method: :patch, remote: true, class: 'button is-info is-inverted is-small'
-
+      = render 'votes/vote', entity: answer
       = answer.body
       = render 'attachments/attachments', entity: answer
       - if user_signed_in? && current_user.author?(answer)
