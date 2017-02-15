@@ -7,6 +7,10 @@ module Votable
   end
 
   def rating
-    self.votes.sum(:rating)
+    votes.sum(:rating)
+  end
+
+  def vote_user(user)
+    votes.find_by(user: user)
   end
 end
