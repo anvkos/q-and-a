@@ -18,6 +18,7 @@ feature 'Vote questions', %q{
       scenario 'see links for votes to question', js: true do
         expect(page).to have_link 'Vote Up'
         expect(page).to have_link 'Vote Down'
+        expect(page).to_not have_link 'Cancel vote'
       end
 
       scenario 'vote up', js: true do
@@ -25,6 +26,7 @@ feature 'Vote questions', %q{
         expect(page).to have_text 'Rating:1'
         expect(page).to_not have_link 'Vote Up'
         expect(page).to_not have_link 'Vote Down'
+        expect(page).to have_link 'Cancel vote'
       end
 
       scenario 'vote down', js: true do
@@ -32,9 +34,23 @@ feature 'Vote questions', %q{
         expect(page).to have_text 'Rating:-1'
         expect(page).to_not have_link 'Vote Up'
         expect(page).to_not have_link 'Vote Down'
+        expect(page).to have_link 'Cancel vote'
       end
 
-      scenario 'vote cancel'
+      scenario 'vote cancel', js: true do
+        create(:vote, votable: question, user: user)
+        visit question_path(question)
+        expect(page).to have_text 'Rating:1'
+        expect(page).to_not have_link 'Vote Up'
+        expect(page).to_not have_link 'Vote Down'
+        expect(page).to have_link 'Cancel vote'
+
+        click_on 'Cancel vote'
+        expect(page).to have_text 'Rating:0'
+        expect(page).to have_link 'Vote Up'
+        expect(page).to have_link 'Vote Down'
+        expect(page).to_not have_link 'Cancel vote'
+      end
     end
 
     scenario 'author question tries to vote', js: true do

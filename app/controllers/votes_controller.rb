@@ -3,12 +3,26 @@ class VotesController < ApplicationController
   before_action :set_votable!, only: [:create]
 
   def create
-    @vote = @votable.votes.build(vote_params)
-    @vote.user = current_user
-    if @vote.save
-      render_success(@vote, 'create', 'Your vote has been accepted!')
+    if !current_user.author?(@votable)
+      @vote = @votable.votes.build(vote_params)
+      @vote.user = current_user
+      if @vote.save
+        render_success(@vote, 'create', 'Your vote has been accepted!')
+      else
+        render_error(:unprocessable_entity, 'Error save', 'Not the correct vote data!')
+      end
     else
-      render_error('Error save', 'Not the correct vote data!')
+      render_error(:forbidden, 'Error save', 'You can not vote')
+    end
+  end
+
+  def destroy
+    vote = Vote.find(params[:id])
+    if current_user.author?(vote)
+      vote.destroy
+      render_success(vote, 'delete', 'Your vote removed!')
+    else
+      render_error(:forbidden, 'Error remove', 'You can not remove an vote!')
     end
   end
 
@@ -24,15 +38,15 @@ class VotesController < ApplicationController
                       )
   end
 
-  def render_error(error = 'error', message = 'message')
-    render json: { error: error, error_message: message }, status: :unprocessable_entity
+  def render_error(status, error = 'error', message = 'message')
+    render json: { error: error, error_message: message }, status: status
   end
 
   def set_votable!
     votable_id = params["#{params[:votable_type].underscore}_id"]
     @votable = params[:votable_type].constantize.find(votable_id)
-  rescue NoMethodError, NameError => e
-    render_error('Error save', 'Not the correct vote data!')
+  rescue NoMethodError, NameError
+    render_error(:bad_request, 'Error', 'Not the correct vote data!')
   end
 
   def vote_params
