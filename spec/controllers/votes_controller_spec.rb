@@ -28,6 +28,14 @@ RSpec.describe VotesController, type: :controller do
         end
       end
 
+      context 'double voting' do
+        before { create(:vote, votable: question, user: @user) }
+
+        it 'tries vote again' do
+          expect { post :create, params: vote_params }.to_not change(question.votes, :count)
+        end
+      end
+
       context 'with invalid attributes' do
         let(:votable_type_missing) { { question_id: question, rating: 'up', format: :json } }
         let(:invalid_votable_type) { { question_id: question, votable_type: 'Trulala', rating: 'up', format: :json } }

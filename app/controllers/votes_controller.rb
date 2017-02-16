@@ -3,7 +3,7 @@ class VotesController < ApplicationController
   before_action :set_votable!, only: [:create]
 
   def create
-    if !current_user.author?(@votable)
+    if !current_user.author?(@votable) && @votable.vote_user(current_user).nil?
       @vote = @votable.votes.build(vote_params)
       @vote.user = current_user
       if @vote.save
