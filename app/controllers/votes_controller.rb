@@ -4,9 +4,8 @@ class VotesController < ApplicationController
 
   def create
     if !current_user.author?(@votable) && @votable.vote_user(current_user).nil?
-      @vote = @votable.votes.build(vote_params)
-      @vote.user = current_user
-      if @vote.save
+      @vote = @votable.send("vote_#{vote_params[:rating]}", current_user)
+      if @vote.persisted?
         render_success(@vote, 'create', 'Your vote has been accepted!')
       else
         render_error(:unprocessable_entity, 'Error save', 'Not the correct vote data!')
@@ -50,6 +49,6 @@ class VotesController < ApplicationController
   end
 
   def vote_params
-    { rating: params[:rating] == 'up' ? 1 : -1 }
+    { rating: params[:rating] == 'up' ? :up : :down }
   end
 end
