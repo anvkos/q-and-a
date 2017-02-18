@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe VotesController, type: :controller do
   let(:question) { create(:question) }
-  let!(:vote_params) { { question_id: question, votable_type: question.class.name, rating: 'up', format: :json } }
+  let!(:vote_params) { { question_id: question, rating: 'up', format: :json } }
 
   describe 'POST #create' do
     context 'Authenticated user' do
@@ -37,44 +37,23 @@ RSpec.describe VotesController, type: :controller do
       end
 
       context 'with invalid attributes' do
-        let(:votable_type_missing) { { question_id: question, rating: 'up', format: :json } }
-        let(:invalid_votable_type) { { question_id: question, votable_type: 'Trulala', rating: 'up', format: :json } }
+        let(:rating_missing) { { question_id: question, format: :json } }
+        let(:invalid_rating) { { question_id: question, rating: 'something', format: :json } }
 
-        context 'does not save the vote' do
-          it 'votable type missing' do
-            expect do
-              post :create, params: votable_type_missing
-            end.to_not change(Vote, :count)
+        context 'save vote with a negative evaluation' do
+          it 'rating missing' do
+            expect { post :create, params: rating_missing }.to change(question.votes, :count).by(1)
+            expect(question.rating).to eq(-1)
           end
 
-          it 'invalid votable type' do
-            expect do
-              post :create, params: invalid_votable_type
-            end.to_not change(Vote, :count)
-          end
-        end
-
-        context 'renders error' do
-          it 'votable type missing' do
-            post :create, params: votable_type_missing
-            data = JSON.parse(response.body)
-            expect(response).to have_http_status :bad_request
-            expect(data['error']).to eq 'Error'
-            expect(data['error_message']).to eq 'Not the correct vote data!'
-          end
-
-          it 'invalid votable type' do
-            post :create, params: invalid_votable_type
-            data = JSON.parse(response.body)
-            expect(response).to have_http_status :bad_request
-            expect(data['error']).to eq 'Error'
-            expect(data['error_message']).to eq 'Not the correct vote data!'
+          it 'invalid rating' do
+            expect { post :create, params: invalid_rating }.to change(question.votes, :count).by(1)
+            expect(question.rating).to eq(-1)
           end
         end
       end
 
       context 'User is author votable' do
-        let!(:vote_params) { { question_id: question, votable_type: question.class.name, rating: 'up', format: :json } }
         before { sign_in question.user }
 
         it 'vote not stored in the database' do
@@ -103,7 +82,6 @@ RSpec.describe VotesController, type: :controller do
   describe 'DELETE #destroy' do
     let(:user) { create(:user) }
     let(:question) { create(:question) }
-    # let!(:vote) { create(:vote_question, votable: question, user: user) }
     let!(:vote) { create(:vote, votable: question, user: user) }
 
     context 'Authenticated user' do
