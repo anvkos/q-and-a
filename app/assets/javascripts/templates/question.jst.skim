@@ -1,0 +1,2 @@
+h4.title.is-4
+  a href="/questions/#{@id}" = @title
