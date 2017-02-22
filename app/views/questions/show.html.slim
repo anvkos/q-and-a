@@ -1,6 +1,6 @@
 = render @question
 
-section.answers
+section.answers *{'data-question-id'=>@question.id}
    = render @question.answers.first_best
 
 - if user_signed_in?

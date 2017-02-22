@@ -20,6 +20,32 @@ feature 'Create answer', %q{
     expect(current_path).to eq question_path(question)
   end
 
+  context 'multiple sessions' do
+    scenario "answer appears on another user's page", js: true do
+      answer_text = 'My answer text'
+      Capybara.using_session('user') do
+        sign_in(user)
+        visit question_path(question)
+      end
+      Capybara.using_session('guest') do
+        visit question_path(question)
+      end
+
+      Capybara.using_session('user') do
+        fill_in 'Body', with: answer_text
+        click_on 'Add new answer'
+        within '.answers' do
+          expect(page).to have_content answer_text
+        end
+      end
+      Capybara.using_session('guest') do
+        within '.answers' do
+          expect(page).to have_content answer_text
+        end
+      end
+    end
+  end
+
   describe 'Authenticated user create answer with invalid attributes' do
     before do
       sign_in(user)

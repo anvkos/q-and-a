@@ -3,6 +3,8 @@ class AnswersController < ApplicationController
   before_action :set_answer, only: [:update, :mark_best, :destroy]
   before_action :set_question, only: [:create]
 
+  after_action :publish_answer, only: [:create]
+
   def new
     @answer = Answer.new
   end
@@ -37,5 +39,15 @@ class AnswersController < ApplicationController
 
   def answer_params
     params.require(:answer).permit(:body, attachments_attributes: [:file, :id, :_destroy])
+  end
+
+  def publish_answer
+    return if @answer.errors.any?
+    ActionCable.server.broadcast(
+      "question_#{@question.id}_answers",
+      answer: @answer,
+      question_author: @answer.question.user.id,
+      attachments: @answer.attachments.map { |a| { id: a.id, file_name: a.file.identifier, file_url: a.file.url } }
+    )
   end
 end

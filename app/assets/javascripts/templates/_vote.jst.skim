@@ -1,0 +1,7 @@
+div class="vote-#{@votable_type}-#{@entity.id}"
+  | Rating:
+  span.rating = @entity.rating
+  - if gon.user_id && gon.user_id != @entity.user_id
+    a.vote-up href="/#{@votable_type}s/#{@entity.id}/votes?rating=up" data-method="post" data-remote="true" format="json" Vote Up
+    a.vote-down href="/#{@votable_type}s/#{@entity.id}/votes?rating=down" data-method="post" data-remote="true" format="json" class="vote-down" Vote down
+    a.vote-cancel.hidden href="#" data-method="delete" data-remote="true" format="json" Cancel vote

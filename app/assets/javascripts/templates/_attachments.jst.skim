@@ -1,0 +1,7 @@
+- if @attachments.length > 0
+  div
+    | Attachments:
+    ul
+      - for a in @attachments when a.id
+        li class="attachment-#{a.id}"
+          a href="#{a.file_url}" = a.file_name

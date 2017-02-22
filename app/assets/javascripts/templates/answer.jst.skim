@@ -1,0 +1,9 @@
+div class="answer answer-#{@answer.id}"
+  div.answer-best
+    - if gon.user_id && gon.user_id == @question_author
+        a.button.is-info.is-inverted.is-small data-remote="true" rel="nofollow" data-method="patch" href="/answers/#{@answer.id}/mark_best" Mark best
+  == JST["templates/_vote"] (entity: @answer, votable_type: 'answer')
+  = @answer.body
+  == JST["templates/_attachments"] (attachments: @attachments)
+  hr
+
