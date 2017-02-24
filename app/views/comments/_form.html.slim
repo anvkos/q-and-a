@@ -1,0 +1,6 @@
+= form_for [commentable, commentable.comments.build], remote: true do |f|
+  = f.label :content, class: 'label'
+  .comment-errors
+  p.control
+    = f.text_area :content, class: 'textarea'
+  = f.submit 'Add new comment', class: 'button is-info'

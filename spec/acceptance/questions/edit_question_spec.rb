@@ -31,7 +31,9 @@ feature 'Question editing', %q{
           expect(page).to have_content updated_title
           expect(page).to_not have_content question.body
           expect(page).to have_content updated_text
-          expect(page).to_not have_selector 'textarea'
+          within '.question-edit' do
+            expect(page).to_not have_selector 'textarea'
+          end
         end
       end
 

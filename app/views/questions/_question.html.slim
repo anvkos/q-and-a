@@ -7,9 +7,10 @@ section.hero
       = @question.body
       = render 'attachments/attachments', entity: @question
       - if user_signed_in? && current_user.author?(@question)
-          div
+          div.question-edit
             = link_to 'Edit', '', class: 'edit-question-link button is-success is-outlined is-small'
             = render 'form_edit', question: @question
           div
             = link_to 'Delete question', @question, method: :delete, class: 'button is-danger is-outlined is-small'
-
+      div class="comments comments-question-#{@question.id}" *{ 'data-question-id' => @question.id }
+        = render 'comments/show', commentable: @question
