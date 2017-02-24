@@ -12,5 +12,5 @@ section.hero
             = render 'form_edit', question: @question
           div
             = link_to 'Delete question', @question, method: :delete, class: 'button is-danger is-outlined is-small'
-      div class="comments comments-question-#{@question.id}" *{ 'data-commentable-id' => @question.id, 'data-commentable-type' => @question.class.name.underscore }
+      div class="comments comments-question-#{@question.id}"
         = render 'comments/show', commentable: @question

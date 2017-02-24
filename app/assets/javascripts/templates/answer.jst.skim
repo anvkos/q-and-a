@@ -5,5 +5,10 @@ div class="answer answer-#{@answer.id}"
   == JST["templates/_vote"] (entity: @answer, votable_type: 'answer')
   = @answer.body
   == JST["templates/_attachments"] (attachments: @attachments)
+  div class="comments comments-answer-#{@answer.id}"
+    h4 Comments
+    div.comments-list
+    - if gon.user_id
+      == JST["templates/_comment_form"] (commentable: @answer, commentable_type: 'answer')
   hr
 

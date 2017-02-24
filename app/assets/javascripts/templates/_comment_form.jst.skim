@@ -1,0 +1,8 @@
+div class='comment-form'
+  form class="new_comment" id="new_comment" action="/#{@commentable_type}s/#{@commentable.id}/comments" accept-charset="UTF-8" data-remote="true" method="post"
+    input name="utf8" type="hidden" value="✓"
+    label class="label" for="comment_content" Content
+    div class="comment-errors"
+    p class="control"
+      textarea class="textarea" name="comment[content]" id="comment_content"
+    input type="submit" name="commit" value="Add new comment" class="button is-info" data-disable-with="Add new comment"
