@@ -2,6 +2,7 @@ class Answer < ApplicationRecord
   include HasUser
   include Attachable
   include Votable
+  include Commentable
   belongs_to :question
 
   validates :body, presence: true, length: { minimum: 10 }

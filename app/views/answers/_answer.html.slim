@@ -12,4 +12,6 @@
       - if user_signed_in? && current_user.author?(answer)
           = render 'answers/form_edit', answer: answer
           = link_to 'Delete answer', answer, method: :delete, data: { confirm: 'The answer will be deleted. You are sure?' }, remote: true, class: 'button is-danger is-outlined is-small'
+      div class=["comments", "comments-answer-#{answer.id}"]
+        = render 'comments/show', commentable: answer
       hr

@@ -1,6 +1,6 @@
 div
   = link_to 'Edit', '', class: 'edit-answer-link button is-success is-outlined is-small', data: { answer_id: answer.id }
-div
+div.answer-edit
   = form_for answer, remote: true, html: { id: "edit-answer-#{answer.id}" } do |f|
     = f.label :body, 'Answer', class: 'label'
     p.control

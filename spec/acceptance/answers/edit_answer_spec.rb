@@ -34,7 +34,9 @@ feature 'Answer editing', %q{
         click_on 'Save'
         expect(page).to_not have_content answer.body
         expect(page).to have_content updated_text
-        expect(page).to_not have_selector 'textarea'
+        within '.answer-edit' do
+          expect(page).to_not have_selector 'textarea'
+        end
       end
     end
 
