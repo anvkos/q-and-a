@@ -22,7 +22,29 @@ feature 'Add comment to questions', %q{
     end
 
     context 'multiple sessions' do
-      scenario "comment appears on another user's page"
+      scenario "comment appears on another user's page", js: true do
+        comment_text = 'My comment text'
+        Capybara.using_session('user') do
+          sign_in(user)
+          visit question_path(question)
+        end
+        Capybara.using_session('guest') do
+          visit question_path(question)
+        end
+
+        Capybara.using_session('user') do
+          fill_in 'Content', with: comment_text
+          click_on 'Add new comment'
+          within '.comments' do
+            expect(page).to have_content comment_text
+          end
+        end
+        Capybara.using_session('guest') do
+          within '.comments' do
+            expect(page).to have_content comment_text
+          end
+        end
+      end
     end
   end
 
