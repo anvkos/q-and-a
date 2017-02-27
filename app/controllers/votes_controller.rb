@@ -1,13 +1,13 @@
 class VotesController < ApplicationController
-  include Contexted
+  include Polymorphic
   include Serialized
 
   before_action :authenticate_user!
-  before_action :set_context!, only: [:create]
+  before_action :set_parent!, only: [:create]
 
   def create
-    if !current_user.author?(@context) && @context.vote_user(current_user).nil?
-      @vote = @context.send("vote_#{vote_params[:rating]}", current_user)
+    if !current_user.author?(@parent) && @parent.vote_user(current_user).nil?
+      @vote = @parent.send("vote_#{vote_params[:rating]}", current_user)
       if @vote.persisted?
         render_success(prepare_data(@vote), 'create', 'Your vote has been accepted!')
       else

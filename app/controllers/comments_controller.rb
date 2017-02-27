@@ -1,14 +1,14 @@
 class CommentsController < ApplicationController
-  include Contexted
+  include Polymorphic
   include Serialized
 
   before_action :authenticate_user!
-  before_action :set_context!, only: [:create]
+  before_action :set_parent!, only: [:create]
 
   after_action :publish_comment, only: [:create]
 
   def create
-    @comment = @context.comments.new(comment_params)
+    @comment = @parent.comments.new(comment_params)
     if @comment.save
       render_success(prepare_data(@comment), 'create', 'Your comment has been added!')
     else
