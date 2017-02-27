@@ -1,10 +1,12 @@
 class VotesController < ApplicationController
+  include Contexted
+
   before_action :authenticate_user!
-  before_action :set_votable!, only: [:create]
+  before_action :set_context!, only: [:create]
 
   def create
-    if !current_user.author?(@votable) && @votable.vote_user(current_user).nil?
-      @vote = @votable.send("vote_#{vote_params[:rating]}", current_user)
+    if !current_user.author?(@context) && @context.vote_user(current_user).nil?
+      @vote = @context.send("vote_#{vote_params[:rating]}", current_user)
       if @vote.persisted?
         render_success(@vote, 'create', 'Your vote has been accepted!')
       else
@@ -39,14 +41,6 @@ class VotesController < ApplicationController
 
   def render_error(status, error = 'error', message = 'message')
     render json: { error: error, error_message: message }, status: status
-  end
-
-  def set_votable!
-    votable_type = request.fullpath.split('/').second.singularize
-    votable_id = params["#{votable_type}_id"]
-    @votable = votable_type.classify.constantize.find(votable_id)
-  rescue NoMethodError, NameError
-    render_error(:bad_request, 'Error', 'Not the correct vote data!')
   end
 
   def vote_params

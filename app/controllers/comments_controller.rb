@@ -1,11 +1,13 @@
 class CommentsController < ApplicationController
+  include Contexted
+
   before_action :authenticate_user!
-  before_action :set_commentable!, only: [:create]
+  before_action :set_context!, only: [:create]
 
   after_action :publish_comment, only: [:create]
 
   def create
-    @comment = @commentable.comments.new(comment_params)
+    @comment = @context.comments.new(comment_params)
     @comment.user = current_user
     if @comment.save
       render_success(@comment, 'create', 'Your comment has been added!')
@@ -31,12 +33,6 @@ class CommentsController < ApplicationController
 
   def comment_params
     params.require(:comment).permit(:content)
-  end
-
-  def set_commentable!
-    commentable_type = request.fullpath.split('/').second.singularize
-    commentable_id = params["#{commentable_type}_id"]
-    @commentable = commentable_type.classify.constantize.find(commentable_id)
   end
 
   def publish_comment
