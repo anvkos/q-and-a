@@ -30,10 +30,6 @@ RSpec.describe QuestionsController, type: :controller do
       expect(assigns(:answer)).to be_a_new(Answer)
     end
 
-    it 'builds new attachment for answer' do
-      expect(assigns(:answer).attachments.first).to be_a_new(Attachment)
-    end
-
     it 'renders show view' do
       expect(response).to render_template :show
     end
@@ -46,10 +42,6 @@ RSpec.describe QuestionsController, type: :controller do
 
     it 'assigns a new Question to @question' do
       expect(assigns(:question)).to be_a_new(Question)
-    end
-
-    it 'builds new attachment for question' do
-      expect(assigns(:question).attachments.first).to be_a_new(Attachment)
     end
 
     it 'renders new view' do
@@ -192,19 +184,15 @@ RSpec.describe QuestionsController, type: :controller do
 
       context 'User is not the author' do
         let(:another_user) { create(:user) }
-        let(:another_question) { create(:question, user: another_user) }
-        render_views
+        let!(:another_question) { create(:question, user: another_user) }
 
         it 'delete try question' do
-          another_question
           expect { delete :destroy, params: { id: another_question } }.to_not change(Question, :count)
         end
 
-        it 're-renders question view' do
+        it 'redirect to question show' do
           delete :destroy, params: { id: another_question }
-          expect(response).to render_template :show
-          expect(response.body).to match another_question.body
-          expect(response.body).to match another_question.title
+          expect(response).to redirect_to question_path(another_question)
         end
       end
     end

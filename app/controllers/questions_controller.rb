@@ -1,55 +1,48 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
   before_action :set_question, only: [:show, :edit, :update, :destroy]
+  before_action :build_answer, only: [:show]
 
   after_action :publish_question, only: [:create]
 
+  respond_to :js, only: [:update]
+
   def index
-    @questions = Question.all
+    respond_with(@questions = Question.all)
   end
 
   def show
-    @answer = @question.answers.build
-    @answer.attachments.build
+    respond_with(@question)
   end
 
   def new
-    @question = Question.new
-    @question.attachments.build
+    respond_with(@question = Question.new)
   end
 
   def edit; end
 
   def create
-    @question = current_user.questions.new(question_params)
-    if @question.save
-      redirect_to @question, notice: 'Your question successfully created.'
-    else
-      flash[:alert] = 'Not the correct question data!'
-      render :new
-    end
+    respond_with(@question = current_user.questions.create(question_params))
   end
 
   def update
     @question.update(question_params) if current_user.author?(@question)
+    respond_with(@question)
   end
 
   def destroy
-    if current_user.author?(@question)
-      @question.destroy
-      redirect_to questions_path, notice: 'Question was successfully deleted.'
-    else
-      flash[:alert] = 'You can not remove an question!'
-      @answer = @question.answers.build
-      @answer.attachments.build
-      render :show
-    end
+    @question.destroy if current_user.author?(@question)
+    respond_with(@question)
   end
 
   private
 
   def set_question
     @question = Question.find(params[:id])
+  end
+
+  def build_answer
+    @answer = @question.answers.build
   end
 
   def question_params

@@ -3,5 +3,5 @@
   .answer-errors
   p.control
     = f.text_area :body, class: 'textarea'
-  = render 'attachments/form', f: f
+  = render 'attachments/form', f: f, attach: @answer.attachments.build
   = f.submit 'Add new answer', class: 'button is-info'

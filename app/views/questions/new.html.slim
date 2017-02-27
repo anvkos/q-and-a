@@ -12,5 +12,5 @@ section.hero
             = f.label :body, class: 'label'
             p.control
               = f.text_area :body, class: 'textarea'
-            = render 'attachments/form', f: f
+            = render 'attachments/form', f: f, attach: @question.attachments.build
             = f.submit 'Create', class: 'button is-primary'
