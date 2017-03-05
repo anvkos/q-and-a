@@ -1,10 +1,10 @@
 class OmniauthCallbacksController < Devise::OmniauthCallbacksController
+  before_action :sign_in_provider
+
   def facebook
-    sign_in_provider
   end
 
   def twitter
-    sign_in_provider
   end
 
   private

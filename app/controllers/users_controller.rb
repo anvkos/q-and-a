@@ -1,5 +1,4 @@
 class UsersController < ApplicationController
-  rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
   rescue_from ActiveRecord::RecordInvalid, with: :record_invalid
 
   def confirmation_email
@@ -17,10 +16,6 @@ class UsersController < ApplicationController
 
   def user_params
     params.require(:user).permit(:email)
-  end
-
-  def record_not_found
-    render file: "#{Rails.root}/public/404.html", status: :not_found
   end
 
   def record_invalid
