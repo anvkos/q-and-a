@@ -7,5 +7,12 @@ FactoryGirl.define do
     email
     password '123456'
     password_confirmation '123456'
+    confirmed_at Time.now
+  end
+
+  factory :unconfirmed_user, class: 'User' do
+    email
+    password '123456'
+    password_confirmation '123456'
   end
 end
