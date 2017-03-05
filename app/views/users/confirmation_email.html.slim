@@ -1,0 +1,11 @@
+h2 Confirm your email
+= form_for(@user, url: user_confirmation_email_path(), html: { method: "patch"}) do |f|
+  .form-errors
+    - if @user.errors.any?
+      - @user.errors.full_messages.each do |msg|
+        = msg
+  = hidden_field_tag :token, @user.confirmation_token
+  p.control
+    = f.label :email, class: 'label'
+    = f.email_field :email, autofocus: true, value: ''
+  =f.submit "Confirm email", class: 'button is-success'
