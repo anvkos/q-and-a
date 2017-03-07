@@ -1,11 +1,12 @@
 class AttachmentsController < ApplicationController
   before_action :authenticate_user!
 
+  load_and_authorize_resource
+
   respond_to :js
 
   def destroy
-    @attachment = Attachment.find(params[:id])
-    @attachment.destroy if current_user.author?(@attachment.attachable)
+    @attachment.destroy
     respond_with(@attachment)
   end
 end

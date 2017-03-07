@@ -5,6 +5,6 @@
         - entity.attachments.each do |a|
           li class="attachment-#{a.id}"
             = link_to a.file.identifier, a.file.url
-            - if user_signed_in? && current_user.author?(a.attachable)
+            - if can?(:destroy, a)
               | &nbsp
               = link_to 'Delete file', a, method: :delete, data: { confirm: 'The file will be deleted. You are sure?' }, remote: true, class: 'button is-danger is-inverted is-small'

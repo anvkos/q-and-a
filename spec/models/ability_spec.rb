@@ -51,5 +51,14 @@ RSpec.describe Ability do
       it { should_not be_able_to :mark_best, answer, user: user }
       it { should_not be_able_to :mark_best, create(:answer), user: user }
     end
+
+    context 'Attachment' do
+      let(:attachment) { create(:attachment, attachable: question) }
+      let(:attachment_other_user) { create(:attachment, attachable: question_other_user) }
+
+      it { should be_able_to :create, Attachment }
+      it { should be_able_to :destroy, attachment, user: user }
+      it { should_not be_able_to :destroy, attachment_other_user, user: user }
+    end
   end
 end
