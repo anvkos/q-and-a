@@ -1,9 +1,11 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :set_question, only: [:show, :edit, :update, :destroy]
+  before_action :set_question, only: [:show, :update, :destroy]
   before_action :build_answer, only: [:show]
 
   after_action :publish_question, only: [:create]
+
+  authorize_resource
 
   respond_to :js, only: [:update]
 
@@ -19,19 +21,17 @@ class QuestionsController < ApplicationController
     respond_with(@question = Question.new)
   end
 
-  def edit; end
-
   def create
     respond_with(@question = current_user.questions.create(question_params))
   end
 
   def update
-    @question.update(question_params) if current_user.author?(@question)
+    @question.update(question_params)
     respond_with(@question)
   end
 
   def destroy
-    @question.destroy if current_user.author?(@question)
+    @question.destroy
     respond_with(@question)
   end
 

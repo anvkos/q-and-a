@@ -46,6 +46,7 @@ GEM
     bulma-rails (0.3.1)
       sass (~> 3.2)
     byebug (9.0.6)
+    cancancan (1.16.0)
     capybara (2.11.0)
       addressable
       mime-types (>= 1.16)
@@ -285,6 +286,7 @@ PLATFORMS
 DEPENDENCIES
   bulma-rails (~> 0.3.1)
   byebug
+  cancancan
   capybara
   capybara-email
   capybara-webkit

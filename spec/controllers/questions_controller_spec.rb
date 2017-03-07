@@ -49,20 +49,6 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
-  describe 'GET #edit' do
-    sign_in_user
-
-    before { get :edit, params: { id: question } }
-
-    it 'assigns the requested question to @question' do
-      expect(assigns(:question)).to eq question
-    end
-
-    it 'renders edit view' do
-      expect(response).to render_template :edit
-    end
-  end
-
   describe 'POST #create' do
     sign_in_user
 
@@ -188,11 +174,6 @@ RSpec.describe QuestionsController, type: :controller do
 
         it 'delete try question' do
           expect { delete :destroy, params: { id: another_question } }.to_not change(Question, :count)
-        end
-
-        it 'redirect to question show' do
-          delete :destroy, params: { id: another_question }
-          expect(response).to redirect_to question_path(another_question)
         end
       end
     end

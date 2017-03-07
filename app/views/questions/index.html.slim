@@ -3,7 +3,8 @@ section.hero
     .container
       h2.title
         | List questions
-      h3.subtitle = link_to 'Ask question', new_question_path
+      - if can?(:create, Question)
+          h3.subtitle = link_to 'Ask question', new_question_path
 section.questions
   - @questions.each do |question|
     h4.title.is-4

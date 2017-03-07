@@ -6,10 +6,11 @@ section.hero
       = render 'votes/vote', entity: @question
       = @question.body
       = render 'attachments/attachments', entity: @question
-      - if user_signed_in? && current_user.author?(@question)
+      - if can?(:update, @question)
           div.question-edit
             = link_to 'Edit', '', class: 'edit-question-link button is-success is-outlined is-small'
             = render 'form_edit', question: @question
+      - if can?(:destroy, @question)
           div
             = link_to 'Delete question', @question, method: :delete, class: 'button is-danger is-outlined is-small'
       div class="comments comments-question-#{@question.id}"
