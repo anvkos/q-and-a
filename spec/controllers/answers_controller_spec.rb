@@ -4,18 +4,6 @@ RSpec.describe AnswersController, type: :controller do
   let(:question) { create(:question) }
   let(:answer) { create(:answer, question: question) }
 
-  describe 'GET #new' do
-    before { get :new, params: { question_id: question } }
-
-    it 'assings a new Answer to @answer' do
-      expect(assigns(:answer)).to be_a_new(Answer)
-    end
-
-    it 'renders new view' do
-      expect(response).to render_template :new
-    end
-  end
-
   describe 'POST #create' do
     sign_in_user
 
@@ -172,8 +160,8 @@ RSpec.describe AnswersController, type: :controller do
 
         it 'render destroy template' do
           delete :destroy, params: { id: another_answer }, format: :js
-          expect(response).to render_template :destroy
-          expect(response.body).to match 'You can not remove an answer'
+          expect(response).to have_http_status(:forbidden)
+          expect(response).to render_template 'errors/error_forbidden'
         end
       end
     end

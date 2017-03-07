@@ -4,13 +4,14 @@
         - if answer.best?
             span.tag.is-warning
               b Answer best
-        - elsif user_signed_in? && current_user.author?(answer.question)
+        - elsif can?(:mark_best, answer)
           = link_to 'Mark best', mark_best_answer_path(answer), method: :patch, remote: true, class: 'button is-info is-inverted is-small'
       = render 'votes/vote', entity: answer
       = answer.body
       = render 'attachments/attachments', entity: answer
-      - if user_signed_in? && current_user.author?(answer)
+      - if can?(:update, answer)
           = render 'answers/form_edit', answer: answer
+      - if can?(:destroy, answer)
           = link_to 'Delete answer', answer, method: :delete, data: { confirm: 'The answer will be deleted. You are sure?' }, remote: true, class: 'button is-danger is-outlined is-small'
       div class=["comments", "comments-answer-#{answer.id}"]
         = render 'comments/show', commentable: answer
