@@ -4,6 +4,9 @@ class VotesController < ApplicationController
 
   before_action :authenticate_user!
   before_action :set_parent!, only: [:create]
+  before_action :set_vote, only: [:destroy]
+
+  authorize_resource
 
   def create
     if !current_user.author?(@parent) && @parent.vote_user(current_user).nil?
@@ -19,16 +22,15 @@ class VotesController < ApplicationController
   end
 
   def destroy
-    vote = Vote.find(params[:id])
-    if current_user.author?(vote)
-      vote.destroy
-      render_success(prepare_data(vote), 'delete', 'Your vote removed!')
-    else
-      render_error(:forbidden, 'Error remove', 'You can not remove an vote!')
-    end
+    @vote.destroy
+    render_success(prepare_data(@vote), 'delete', 'Your vote removed!')
   end
 
   private
+
+  def set_vote
+    @vote = Vote.find(params[:id])
+  end
 
   def prepare_data(item)
     item.slice(:id, :votable_id)

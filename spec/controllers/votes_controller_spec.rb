@@ -117,8 +117,8 @@ RSpec.describe VotesController, type: :controller do
           delete :destroy, params: { id: vote.id, format: :json }
           data = JSON.parse(response.body)
           expect(response).to have_http_status :forbidden
-          expect(data['error']).to eq 'Error remove'
-          expect(data['error_message']).to eq 'You can not remove an vote!'
+          expect(data['error']).to eq 'forbidden'
+          expect(data['error_message']).to eq 'You are not authorized to access this page.'
         end
       end
     end

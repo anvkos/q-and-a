@@ -60,5 +60,16 @@ RSpec.describe Ability do
       it { should be_able_to :destroy, attachment, user: user }
       it { should_not be_able_to :destroy, attachment_other_user, user: user }
     end
+
+    context 'Vote' do
+      let(:votable) { question }
+      let(:vote) { create(:vote, votable: question_other_user, user: user) }
+      let(:vote_other_user) { create(:vote, votable: question_other_user) }
+
+      it { should be_able_to :create, Vote }
+      it { should_not be_able_to :create, votable.votes.new, user: user }
+      it { should be_able_to :destroy, vote, user: user }
+      it { should_not be_able_to :destroy, vote_other_user, user: user }
+    end
   end
 end
