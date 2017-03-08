@@ -67,7 +67,18 @@ RSpec.describe Ability do
       let(:vote_other_user) { create(:vote, votable: question_other_user) }
 
       it { should be_able_to :create, Vote }
+
+      it 'cannot vote author votable' do
+        expect(subject.can?(:create, votable.votes.new)).to be_falsey
+      end
+      # короткая запись cannot vote author votable, но понятная ли?
       it { should_not be_able_to :create, votable.votes.new, user: user }
+
+      it 'cannot double vote' do
+        votable_already_vote = question_other_user.vote_up(user)
+        expect(subject.can?(:create, votable_already_vote)).to be_falsey
+      end
+
       it { should be_able_to :destroy, vote, user: user }
       it { should_not be_able_to :destroy, vote_other_user, user: user }
     end

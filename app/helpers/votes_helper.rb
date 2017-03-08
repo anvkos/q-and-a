@@ -3,15 +3,19 @@ module VotesHelper
     user_signed_in? && !current_user.author?(entity)
   end
 
+  def can_delete_vote_for?(entity)
+    entity.vote_user(current_user).present? && can?(:destroy, entity.vote_user(current_user))
+  end
+
   def vote_delete_path(entity)
-    entity.vote_user(current_user).present? ? vote_path(entity.vote_user(current_user)) : '#'
+    can_delete_vote_for?(entity) ? vote_path(entity.vote_user(current_user)) : '#'
   end
 
   def class_hidden_vote_link(entity)
-    'hidden' if entity.vote_user(current_user).present?
+    'hidden' unless can?(:create, entity.votes.build)
   end
 
   def class_hidden_cancel_vote(entity)
-    'hidden' if entity.vote_user(current_user).nil?
+    'hidden' unless can_delete_vote_for?(entity)
   end
 end

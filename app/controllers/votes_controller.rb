@@ -4,20 +4,18 @@ class VotesController < ApplicationController
 
   before_action :authenticate_user!
   before_action :set_parent!, only: [:create]
+  before_action :authorize_parent, only: [:create]
   before_action :set_vote, only: [:destroy]
 
   authorize_resource
 
   def create
-    if !current_user.author?(@parent) && @parent.vote_user(current_user).nil?
-      @vote = @parent.send("vote_#{vote_params[:rating]}", current_user)
-      if @vote.persisted?
-        render_success(prepare_data(@vote), 'create', 'Your vote has been accepted!')
-      else
-        render_error(:unprocessable_entity, 'Error save', 'Not the correct vote data!')
-      end
+    authorize! :create, @parent.votes.build
+    @vote = @parent.send("vote_#{vote_params[:rating]}", current_user)
+    if @vote.persisted?
+      render_success(prepare_data(@vote), 'create', 'Your vote has been accepted!')
     else
-      render_error(:forbidden, 'Error save', 'You can not vote')
+      render_error(:unprocessable_entity, 'Error save', 'Not the correct vote data!')
     end
   end
 
@@ -27,6 +25,10 @@ class VotesController < ApplicationController
   end
 
   private
+
+  def authorize_parent
+    authorize! :read, @parent
+  end
 
   def set_vote
     @vote = Vote.find(params[:id])
