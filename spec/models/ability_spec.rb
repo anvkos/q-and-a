@@ -82,5 +82,9 @@ RSpec.describe Ability do
       it { should be_able_to :destroy, vote, user: user }
       it { should_not be_able_to :destroy, vote_other_user, user: user }
     end
+
+    context 'Comment' do
+      it { should be_able_to :create, Comment }
+    end
   end
 end

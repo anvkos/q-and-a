@@ -1,6 +1,6 @@
 h4 Comments
 .comments-list
   = render commentable.comments
--if user_signed_in?
+-if can?(:create, Comment)
   .comment-form
     = render 'comments/form', commentable: commentable

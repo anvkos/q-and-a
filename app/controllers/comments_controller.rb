@@ -4,8 +4,11 @@ class CommentsController < ApplicationController
 
   before_action :authenticate_user!
   before_action :set_parent!, only: [:create]
+  before_action :authorize_parent
 
   after_action :publish_comment, only: [:create]
+
+  authorize_resource
 
   def create
     @comment = @parent.comments.new(comment_params)
@@ -17,6 +20,10 @@ class CommentsController < ApplicationController
   end
 
   private
+
+  def authorize_parent
+    authorize! :read, @parent
+  end
 
   def prepare_data(item)
     item.slice(:id, :commentable_id, :content)
