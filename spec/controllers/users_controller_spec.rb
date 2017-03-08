@@ -21,12 +21,6 @@ RSpec.describe UsersController, type: :controller do
     end
 
     context 'user try confirm email with invalid attributes' do
-      it 'user not found by token' do
-        email = 'test0@test.com'
-        patch :confirmation_email, params: { user: { email: email } }
-        expect(response).to have_http_status :not_found
-      end
-
       context 'email alredy use' do
         it 'try use email another user' do
           another_user_email = create(:user).email
