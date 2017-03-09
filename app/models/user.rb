@@ -11,6 +11,8 @@ class User < ApplicationRecord
   has_many :answers, dependent: :destroy
   has_many :authorizations
 
+  scope :without_user, ->(user) { where.not(id: user.id) }
+
   def author?(entity)
     id == entity.user_id
   end
