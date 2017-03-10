@@ -7,7 +7,7 @@ class Api::V1::ProfilesController < ApplicationController
     respond_with current_resource_owner
   end
 
-  def show
+  def index
     respond_with User.without_user(current_resource_owner)
   end
 
