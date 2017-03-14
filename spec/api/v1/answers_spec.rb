@@ -43,6 +43,7 @@ RSpec.describe 'Answers API' do
       let!(:comment) { comments.last }
       let!(:attachments) { create_list(:attachment, 2, attachable: answer) }
       let!(:attachment) { attachments.last }
+      let!(:parent_path) { 'answer' }
 
       before { get "/api/v1/answers/#{answer.id}", params: { format: :json, access_token: access_token.token } }
 
@@ -56,35 +57,8 @@ RSpec.describe 'Answers API' do
         end
       end
 
-      context 'attachments' do
-        it 'included in answer object' do
-          expect(response.body).to have_json_size(2).at_path("answer/attachments")
-        end
-
-        it "contains id" do
-          expect(response.body).to be_json_eql(attachment.file.url.to_json).at_path("answer/attachments/0/url")
-        end
-
-        it "contains name" do
-          expect(response.body).to be_json_eql(attachment.file.url.to_json).at_path("answer/attachments/0/url")
-        end
-
-        it "contains url" do
-          expect(response.body).to be_json_eql(attachment.file.url.to_json).at_path("answer/attachments/0/url")
-        end
-      end
-
-      context 'comments' do
-        it 'included in answer object' do
-          expect(response.body).to have_json_size(2).at_path("answer/comments")
-        end
-
-        %w(id content created_at updated_at).each do |attr|
-          it "contains #{attr}" do
-            expect(response.body).to be_json_eql(comment.send(attr.to_sym).to_json).at_path("answer/comments/0/#{attr}")
-          end
-        end
-      end
+      it_behaves_like 'API Attachable'
+      it_behaves_like 'API Commentable'
     end
 
     def do_request(options = {})
