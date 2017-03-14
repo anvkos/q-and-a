@@ -1,18 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe 'Profile API' do
-  describe 'GET /profiles/me' do
-    context 'unauthorized' do
-      it 'returns 401 status if ther is no access_token' do
-        get '/api/v1/profiles/me', params: { format: :json }
-        expect(response.status).to eq 401
-      end
-
-      it 'returns 401 status if ther is access_token is invalid' do
-        get '/api/v1/profiles/me', params: { format: :json, access_token: '123' }
-        expect(response.status).to eq 401
-      end
-    end
+  describe 'GET #me' do
+    it_behaves_like 'API Authenticable'
 
     context 'authorized' do
       let(:me) { create(:user) }
@@ -36,20 +26,14 @@ RSpec.describe 'Profile API' do
         end
       end
     end
+
+    def do_request(options = {})
+      get '/api/v1/profiles/me', params: { format: :json }.merge(options)
+    end
   end
 
-  describe 'GET /profiles' do
-    context 'unauthorized' do
-      it 'returns 401 status if ther is no access_token' do
-        get '/api/v1/profiles', params: { format: :json }
-        expect(response.status).to eq 401
-      end
-
-      it 'returns 401 status if ther is access_token is invalid' do
-        get '/api/v1/profiles', params: { format: :json, access_token: '123' }
-        expect(response.status).to eq 401
-      end
-    end
+  describe 'GET #index' do
+    it_behaves_like 'API Authenticable'
 
     context 'authorized' do
       let(:me) { create(:user) }
@@ -75,6 +59,10 @@ RSpec.describe 'Profile API' do
       it "contains present number users" do
         expect(response.body).to have_json_size(users.size)
       end
+    end
+
+    def do_request(options = {})
+      get '/api/v1/profiles', params: { format: :json }.merge(options)
     end
   end
 end
