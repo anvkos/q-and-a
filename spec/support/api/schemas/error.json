@@ -1,0 +1,8 @@
+{
+  "type": "object",
+  "required": ["error", "error_message"],
+  "properties": {
+    "error": { "type": "string" },
+    "error_message": { "type": "string" }
+  }
+}

@@ -85,4 +85,5 @@ group :test do
   gem 'simplecov', :require => false
   gem 'capybara-email'
   gem 'json_spec'
+  gem 'json-schema'
 end

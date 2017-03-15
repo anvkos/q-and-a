@@ -1,9 +1,5 @@
 shared_examples_for 'Create Vote' do
-  let(:votable_params) do
-    params = {}
-    params.store("#{votable.class.name.underscore}_id", votable.id)
-    params
-  end
+  let(:votable_params) { Hash["#{votable.class.name.underscore}_id", votable.id] }
   let!(:vote_params) { votable_params.merge(rating: 'up', format: :json) }
 
   context 'Authenticated user' do
@@ -17,14 +13,8 @@ shared_examples_for 'Create Vote' do
       it 'render success' do
         post :create, params: vote_params
         votable.reload
-        data = JSON.parse(response.body)
         expect(response).to have_http_status :success
-        expect(data['id']).to eq assigns(:vote).id
-        expect(data['votable_rating']).to eq votable.rating
-        expect(data['votable_type']).to eq votable.class.name.underscore
-        expect(data['votable_id']).to eq votable.id
-        expect(data['action']).to eq 'create'
-        expect(data['message']).to eq 'Your vote has been accepted!'
+        expect(response).to match_response_schema('vote_serialized')
       end
     end
 
@@ -54,18 +44,18 @@ shared_examples_for 'Create Vote' do
     end
 
     context 'User is author votable' do
-      before { sign_in votable.user }
+      before do
+        sign_in votable.user
+        post :create, params: vote_params
+      end
 
       it 'vote not stored in the database' do
         expect { post :create, params: vote_params }.to_not change(Vote, :count)
       end
 
       it 'render error' do
-        post :create, params: vote_params
-        data = JSON.parse(response.body)
         expect(response).to have_http_status :forbidden
-        expect(data['error']).to eq 'forbidden'
-        expect(data['error_message']).to eq 'You are not authorized to access this page.'
+        expect(response).to match_response_schema('error')
       end
     end
   end

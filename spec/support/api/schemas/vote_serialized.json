@@ -1,0 +1,19 @@
+{
+  "type": "object",
+  "required": [
+    "id",
+    "votable_id",
+    "votable_type",
+    "votable_rating",
+    "action",
+    "message"
+  ],
+  "properties": {
+    "id": { "type": "integer" },
+    "votable_id": { "type": "integer" },
+    "votable_type": { "type": "string" },
+    "votable_rating": { "type": "integer" },
+    "action": { "type": "string" },
+    "message": { "type": "string" }
+  }
+}

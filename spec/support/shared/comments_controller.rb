@@ -1,15 +1,13 @@
 shared_examples_for 'Create Comment' do
-  let(:commentable_params) do
-    params = {}
-    params.store("#{commentable.class.name.underscore}_id", commentable.id)
-    params
-  end
+  let(:commentable_params) { Hash["#{commentable.class.name.underscore}_id", commentable.id] }
   let!(:comment_params) { commentable_params.merge(comment: attributes_for(:comment), format: :json) }
 
   context 'Authenticated user' do
     sign_in_user
 
     context 'with valid attributes' do
+      before { post :create, params: comment_params }
+
       it 'saves the new comment in the database' do
         expect do
           post :create, params: comment_params
@@ -17,12 +15,15 @@ shared_examples_for 'Create Comment' do
       end
 
       it 'comment belongs to the user' do
-        post :create, params: comment_params
         expect(Comment.last.user).to eq @user
       end
 
+      it 'render comment serialized json schema' do
+        expect(response).to have_http_status :success
+        expect(response).to match_response_schema('comment_serialized')
+      end
+
       it 'render success json' do
-        post :create, params: comment_params
         comment = commentable.comments.last
         data = JSON.parse(response.body)
 
@@ -46,10 +47,8 @@ shared_examples_for 'Create Comment' do
 
       it 'render error json' do
         post :create, params: invalid_comment_params
-        data = JSON.parse(response.body)
         expect(response).to have_http_status :unprocessable_entity
-        expect(data['error']).to eq 'Error save'
-        expect(data['error_message']).to eq 'Not the correct comment data!'
+        expect(response).to match_response_schema('error')
       end
     end
   end

@@ -1,0 +1,19 @@
+{
+  "type": "object",
+  "required": [
+    "id",
+    "content",
+    "commentable_id",
+    "commentable_type",
+    "action",
+    "message"
+  ],
+  "properties": {
+    "id": { "type": "integer" },
+    "content": { "type": "string" },
+    "commentable_id": { "type": "integer" },
+    "commentable_type": { "type": "string" },
+    "action": { "type": "string" },
+    "message": { "type": "string" }
+  }
+}
