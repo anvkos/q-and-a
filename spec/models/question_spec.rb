@@ -16,4 +16,17 @@ RSpec.describe Question, type: :model do
     it { should validate_length_of(:title).is_at_least(10) }
     it { should validate_length_of(:body).is_at_least(10) }
   end
+
+  describe '#lastday' do
+    let!(:questions) { create_list(:question, 2) }
+    let!(:old_questions) { create_list(:question, 2, created_at: 2.day.ago) }
+
+    it 'returns questions lastday' do
+      expect(Question.lastday).to eq questions
+    end
+
+    it 'not returns old questions' do
+      expect(Question.lastday).to_not eq old_questions
+    end
+  end
 end
