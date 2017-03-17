@@ -4,6 +4,7 @@ class Question < ApplicationRecord
   include Votable
   include Commentable
   has_many :answers, dependent: :destroy
+  has_many :subscriptions, dependent: :destroy
 
   validates :title, :body, presence: true, length: { minimum: 10 }
 

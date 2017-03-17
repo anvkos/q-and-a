@@ -10,6 +10,7 @@ class User < ApplicationRecord
   has_many :questions, dependent: :destroy
   has_many :answers, dependent: :destroy
   has_many :authorizations
+  has_many :subscriptions, dependent: :destroy
 
   scope :without_user, ->(user) { where.not(id: user.id) }
 
