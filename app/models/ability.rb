@@ -26,8 +26,11 @@ class Ability
     can :create, Vote do |vote|
       !user.author?(vote.votable) && vote.votable.vote_user(user).nil?
     end
+    can :create, Subscription do |subscription|
+      subscription.question.subscriptions.find_by(user_id: user.id).nil?
+    end
     can :update, [Question, Answer], user_id: user.id
-    can :destroy, [Question, Answer, Vote], user_id: user.id
+    can :destroy, [Question, Answer, Vote, Subscription], user_id: user.id
     can :destroy, Attachment, attachable: { user_id: user.id }
     can :mark_best, Answer do |answer|
       user.author?(answer.question) && !answer.best

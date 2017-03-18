@@ -5,6 +5,8 @@ section.hero
         = @question.title
       = render 'votes/vote', entity: @question
       = @question.body
+      .subscription
+        = render 'subscriptions/subscription', question: @question
       = render 'attachments/attachments', entity: @question
       - if can?(:update, @question)
           div.question-edit

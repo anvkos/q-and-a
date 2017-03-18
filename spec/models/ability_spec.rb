@@ -86,5 +86,19 @@ RSpec.describe Ability do
     context 'Comment' do
       it { should be_able_to :create, Comment }
     end
+
+    context 'Subscribe' do
+      let!(:subscription) { create(:subscription, user: user, question: question) }
+      let!(:subscription_other_user) { create(:subscription, user: other_user, question: question) }
+
+      it { should be_able_to :create, Subscription }
+
+      it 'cannot double subscription' do
+        expect(subject.can?(:create, Subscription.new(question: question))).to be_falsey
+      end
+
+      it { should be_able_to :destroy, subscription, user: user }
+      it { should_not be_able_to :destroy, subscription_other_user, user: user }
+    end
   end
 end
