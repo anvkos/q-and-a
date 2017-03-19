@@ -30,4 +30,21 @@ RSpec.describe Question, type: :model do
       expect(Question.lastday).to_not eq old_questions
     end
   end
+
+  describe '#create' do
+    let(:user) { create(:user) }
+    let(:question) { build(:question, user: user) }
+
+    context 'subscribe' do
+      it 'should subscribe after creating ' do
+        expect(question).to receive(:subscribe)
+        question.run_callbacks(:create)
+      end
+
+      it 'should save author subscription' do
+        question.save
+        expect(question.subscriptions).to include(Subscription.find_by(user_id: user.id, question_id: question.id))
+      end
+    end
+  end
 end

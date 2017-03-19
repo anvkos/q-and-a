@@ -38,11 +38,16 @@ feature 'Subscribe question', %q{
     end
 
     context 'author question', js: true do
-      scenario 'unsubscribe', js: true do
-        pending
-        create(:question, user: user)
+      before do
+        sign_in(question.user)
         visit question_path(question)
+      end
+
+      scenario 'does not see the subscription link', js: true do
         expect(page).to_not have_link 'Subscribe'
+      end
+
+      scenario 'unsubscribe his question', js: true do
         expect(page).to have_link 'Unsubscribe'
 
         click_on 'Unsubscribe'

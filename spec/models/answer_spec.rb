@@ -51,4 +51,20 @@ RSpec.describe Answer, type: :model do
       expect(Answer.first_best.first).to eq third_answer
     end
   end
+
+  describe '#create' do
+    let(:answer) { build(:answer) }
+
+    context 'notify' do
+      it 'should notify after creating ' do
+        expect(answer).to receive(:notify)
+        answer.run_callbacks(:create)
+      end
+
+      it 'should notify subscribers' do
+        expect(SubscriptionQuestionJob).to receive(:perform_later).with(answer)
+        answer.save
+      end
+    end
+  end
 end

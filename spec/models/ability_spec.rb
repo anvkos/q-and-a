@@ -88,7 +88,7 @@ RSpec.describe Ability do
     end
 
     context 'Subscribe' do
-      let!(:subscription) { create(:subscription, user: user, question: question) }
+      let!(:subscription) { create(:subscription, user: user, question: question_other_user) }
       let!(:subscription_other_user) { create(:subscription, user: other_user, question: question) }
 
       it { should be_able_to :create, Subscription }
