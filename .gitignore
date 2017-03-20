@@ -26,3 +26,5 @@ coverage
 *.sublime-project
 *.sublime-workspace
 .env
+config/*.sphinx.conf
+db/sphinx
