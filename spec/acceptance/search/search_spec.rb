@@ -89,4 +89,13 @@ feature 'Search', %q{
       expect(page).to have_content 'Nothing found'
     end
   end
+
+  scenario 'pagination', sphinx: true do
+    fill_in 'q', with: 'Question'
+    check 'scope_all'
+    click_on 'Search'
+    within '.search-results' do
+      expect(page).to have_selector('.item', 5)
+    end
+  end
 end

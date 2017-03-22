@@ -4,3 +4,4 @@ h3 Result
 - else
   - @result.each do |item|
       = render "#{item.model_name.to_s.underscore}", item: item
+  = will_paginate @result
