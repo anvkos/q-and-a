@@ -1,0 +1,5 @@
+.item.answer
+  h3
+    = link_to "Answer for question #{item.question.title}", question_path(item.question)
+  div
+    = item.body

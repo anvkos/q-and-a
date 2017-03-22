@@ -21,6 +21,8 @@ Rails.application.routes.draw do
     resources :comments, only: [:create]
   end
 
+  resource :search, only: [:show]
+
   resources :questions, concerns: [:votable, :commentable] do
     resources :answers, concerns: [:votable, :commentable], shallow: true do
       member do

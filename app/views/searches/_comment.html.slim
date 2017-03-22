@@ -1,0 +1,8 @@
+.item.comment
+  h3
+    - if item.commentable_type == 'Question'
+      = link_to "Comment for question #{item.commentable.title}", question_path(item.commentable)
+    - else
+      = link_to "Comment for answer question #{item.commentable.question.title}", question_path(item.commentable.question)
+  div
+    = item.content

@@ -1,0 +1,16 @@
+default: &default
+  enable_star: true
+  min_prefix_len: 0
+  min_infix_len: 1
+  min_word_len: 1
+  charset_type: utf-8
+  morphology: stem_ru
+production:
+  <<: *default
+  # mysql41: 9312
+development:
+  <<: *default
+  mysql41: 9306
+test:
+  <<: *default
+  mysql41: 9313

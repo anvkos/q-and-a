@@ -1,0 +1,6 @@
+h3 Result
+- if @result.empty?
+  p Nothing found
+- else
+  - @result.each do |item|
+      = render "#{item.model_name.to_s.underscore}", item: item

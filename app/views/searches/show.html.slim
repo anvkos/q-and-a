@@ -1,0 +1,6 @@
+.section.search
+  h2 Search
+  = render 'form'
+  - if @result
+    .search-results
+      = render 'result'
