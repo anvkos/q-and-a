@@ -60,6 +60,7 @@ gem 'thinking-sphinx'
 gem 'will_paginate'
 gem 'dotenv-rails'
 gem 'dotenv-deployment', require: 'dotenv/deployment'
+gem 'therubyracer'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
