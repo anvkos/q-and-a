@@ -7,7 +7,7 @@ default: &default
   morphology: stem_ru
 production:
   <<: *default
-  # mysql41: 9312
+  mysql41: 9312
 development:
   <<: *default
   mysql41: 9306
