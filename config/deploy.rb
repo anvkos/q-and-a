@@ -3,7 +3,7 @@ lock "3.8.0"
 
 set :application, "q-and-a"
 set :repo_url, "git@github.com:anvkos/q-and-a.git"
-set :branch, "41-capistrano"
+# set :branch, "41-capistrano"
 # set :rvm_ruby_version, '2.2.2@my_gemset_name'
 
 # Default deploy_to directory is /var/www/my_app_name
