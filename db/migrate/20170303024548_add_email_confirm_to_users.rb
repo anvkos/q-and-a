@@ -10,6 +10,6 @@ class AddEmailConfirmToUsers < ActiveRecord::Migration[5.0]
   end
 
   def down
-    remove_columns :users, :confirmation_token, :confirmed_at, :confirmation_sent_at. :unconfirmed_email
+    remove_columns :users, :confirmation_token, :confirmed_at, :confirmation_sent_at, :unconfirmed_email
   end
 end

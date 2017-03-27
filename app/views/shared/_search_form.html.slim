@@ -1,0 +1,5 @@
+.nav-item
+  = form_tag search_path, method: :get
+    .field
+      = text_field_tag :q, params[:q], class: 'input', placeholder: "Find a ..."
+      = submit_tag 'Search', class: 'button is-info is-outlined'
