@@ -5,7 +5,8 @@ section.hero
         | List questions
       - if can?(:create, Question)
           h3.subtitle = link_to 'Ask question', new_question_path
-section.questions
-  - @questions.each do |question|
-    h4.title.is-4
-      = link_to question.title, question
+- cache collection_cache_key_for(:question) do
+  section.questions
+    - @questions.each do |question|
+      h4.title.is-4
+        = link_to question.title, question

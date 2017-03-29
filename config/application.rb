@@ -16,6 +16,7 @@ module QandA
     # -- all .rb files in that directory are automatically loaded.
 
     config.active_job.queue_adapter = :sidekiq
+    config.cache_store = :redis_store, 'redis://localhost:6379/0/cache', { expire_in: 90.minutes }
 
     config.generators do |g|
       g.test_framework :rspec,
