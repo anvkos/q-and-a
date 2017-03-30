@@ -1,6 +1,7 @@
 div class="vote-#{entity.class.name.underscore}-#{entity.id}"
-  | Rating:
-  span class="rating" = entity.rating
+  - cache ['rating', entity]
+    | Rating:
+    span class="rating" = entity.rating
   - if user_can_vote_for?(entity)
     = link_to 'Vote Up', polymorphic_url([entity, :votes], rating: 'up'), method: :post, remote: true, format: :json, class: "vote-up #{class_hidden_vote_link(entity)}"
     = link_to 'Vote Down', polymorphic_url([entity, :votes], rating: 'down'), method: :post, remote: true, format: :json, class: "vote-down #{class_hidden_vote_link(entity)}"

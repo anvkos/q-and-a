@@ -1,13 +1,14 @@
 section.hero
   .hero-body
     .container.question
-      h2.title
-        = @question.title
+      - cache @question do
+        h2.title
+          = @question.title
+        = @question.body
+        = render 'attachments/attachments', entity: @question
       = render 'votes/vote', entity: @question
-      = @question.body
       .subscription
         = render 'subscriptions/subscription', question: @question
-      = render 'attachments/attachments', entity: @question
       - if can?(:update, @question)
           div.question-edit
             = link_to 'Edit', '', class: 'edit-question-link button is-success is-outlined is-small'
@@ -15,5 +16,6 @@ section.hero
       - if can?(:destroy, @question)
           div
             = link_to 'Delete question', @question, method: :delete, class: 'button is-danger is-outlined is-small'
-      div class="comments comments-question-#{@question.id}"
-        = render 'comments/show', commentable: @question
+      - cache ['comments', @question]
+        div class="comments comments-question-#{@question.id}"
+          = render 'comments/show', commentable: @question

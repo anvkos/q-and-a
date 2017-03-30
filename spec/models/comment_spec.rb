@@ -4,7 +4,7 @@ RSpec.describe Comment, type: :model do
   it_behaves_like 'has_user'
 
   describe 'association' do
-    it { should belong_to(:commentable) }
+    it { should belong_to(:commentable).touch(true) }
   end
 
   describe 'validation' do

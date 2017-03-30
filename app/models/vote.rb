@@ -1,6 +1,6 @@
 class Vote < ApplicationRecord
   include HasUser
-  belongs_to :votable, polymorphic: true
+  belongs_to :votable, polymorphic: true, touch: true
 
   validates :rating, presence: true
   validates :rating, inclusion: { in: [-1, 1],
