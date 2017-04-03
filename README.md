@@ -1,24 +1,27 @@
-# README
+# Question and Answer
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+### Requirements
 
-Things you may want to cover:
+* Ruby version >= 2.3.1
+* Database Postgres
+* Redis
+* Sphinx
 
-* Ruby version
+### Getting Started
 
-* System dependencies
+Install gem's
+```sh
+$ bundle install
+```
 
-* Configuration
+Create database
+```sh
+$ rails db:setup
+```
 
-* Database creation
+Start the web server
+```sh
+$ rails s
+```
 
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+More detailed [setting of the environment](docs/server_settings/server_setting.md)
